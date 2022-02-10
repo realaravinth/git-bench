@@ -44,7 +44,7 @@ cargo bench
 
 ## Results
 
-Run on Intel Core i7-9750h, NVMe SSD(read: 17,000MB/s), 32GB DDR4 @2667 MHz
+Run on Intel Core i7-9750h, NVMe SSD(read: 1,700MB/s), 32GB DDR4 @2667 MHz
 
 ```bash
 ➜  git-bench git:(master) ✗ cargo bench
