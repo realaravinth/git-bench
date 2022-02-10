@@ -105,11 +105,10 @@ mod tests {
     fn bench_git(b: &mut Bencher) {
         init();
         let mut git = Git::new(TEST_DIR);
+        let file = FILES.get(50).unwrap();
 
         b.iter(|| {
-            FILES.iter().for_each(|file| {
-                black_box(git.get_file(file));
-            });
+            black_box(git.get_file(file));
         });
     }
 
@@ -152,10 +151,11 @@ mod tests {
     fn bench_git_100_files(b: &mut Bencher) {
         init();
         let mut git = Git::new(TEST_DIR);
-        let file = FILES.get(50).unwrap();
 
         b.iter(|| {
-            black_box(git.get_file(file));
+            FILES.iter().for_each(|file| {
+                black_box(git.get_file(file));
+            });
         });
     }
 

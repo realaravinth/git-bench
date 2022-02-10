@@ -63,19 +63,18 @@ Run on Intel Core i7-9750h, NVMe SSD(read: 1,700MB/s), 32GB DDR4 @2667 MHz
 
 ```bash
 ➜  git-bench git:(master) ✗ cargo bench
-   Compiling git-bench v0.1.0 (/home/aravinth/code/batsaene/git-bench)
-    Finished bench [optimized] target(s) in 0.93s
+    Finished bench [optimized] target(s) in 0.34s
      Running unittests (target/release/deps/git_bench-91a556763cda354f)
 
 running 8 tests
 test tests::bench_cache_fs            ... bench:          20 ns/iter (+/- 0)
-test tests::bench_cache_fs_100_files  ... bench:       2,203 ns/iter (+/- 151)
-test tests::bench_cache_git           ... bench:          20 ns/iter (+/- 1)
-test tests::bench_cache_git_100_files ... bench:       2,229 ns/iter (+/- 57)
-test tests::bench_fs                  ... bench:       3,910 ns/iter (+/- 115)
-test tests::bench_fs_100_files        ... bench:     395,029 ns/iter (+/- 48,639)
-test tests::bench_git                 ... bench:   6,938,527 ns/iter (+/- 230,935)
-test tests::bench_git_100_files       ... bench:      67,527 ns/iter (+/- 2,248)
+test tests::bench_cache_fs_100_files  ... bench:       2,214 ns/iter (+/- 105)
+test tests::bench_cache_git           ... bench:          20 ns/iter (+/- 0)
+test tests::bench_cache_git_100_files ... bench:       2,232 ns/iter (+/- 138)
+test tests::bench_fs                  ... bench:       3,810 ns/iter (+/- 159)
+test tests::bench_fs_100_files        ... bench:     397,494 ns/iter (+/- 42,564)
+test tests::bench_git                 ... bench:      67,731 ns/iter (+/- 1,146)
+test tests::bench_git_100_files       ... bench:   7,100,108 ns/iter (+/- 149,560)
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 8 measured; 0 filtered out; finished in 13.91s
+test result: ok. 0 passed; 0 failed; 0 ignored; 8 measured; 0 filtered out; finished in 23.01s
 ```
