@@ -1,5 +1,19 @@
 # Reading file off of Git vs File System benchmark
 
+I'm investigating versioning methods for
+[realaravinth/pages](https://github.com/realaravinth/pages)(self-hosted
+GitHub pages). Using `Git`, as opposed to having multiple copies of the
+same website, will use less storage but will add fs reading overhead as
+the Git database will have to be queried first before the contents of
+the file can be fetched.
+
+File querying is implemented for the following systems:
+
+1. Git via [`git2-rs`](https://crates.io/crates/git2)
+2. Vanilla file system([`std::fs::read`](https://doc.rust-lang.org/std/fs/fn.read.html))
+3. Cached Git
+4. Cached file system
+
 ## How to run
 
 1. Download `rustup`: see [rustup.rs](https://rustup.rs/)
