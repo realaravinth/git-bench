@@ -21,9 +21,9 @@
 extern crate test;
 
 use git2::*;
+use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
-use std::collections::HashMap;
 use std::rc::Rc;
 
 mod data;
@@ -33,7 +33,6 @@ type Bytes = Rc<Vec<u8>>;
 trait GetFile {
     fn get_file(&mut self, path: &str) -> Bytes;
 }
-
 
 struct Git {
     repo: git2::Repository,
@@ -56,10 +55,7 @@ impl GetFile for Git {
     }
 }
 
-
-
 struct FS;
-
 
 impl GetFile for FS {
     fn get_file(&mut self, path: &str) -> Bytes {
@@ -67,19 +63,15 @@ impl GetFile for FS {
     }
 }
 
-
 struct Cache<T: GetFile> {
     fs: T,
-    cache: HashMap<String, Rc<Vec<u8>>>
+    cache: HashMap<String, Rc<Vec<u8>>>,
 }
 
 impl<T: GetFile> Cache<T> {
     pub fn new(fs: T) -> Self {
         let cache = HashMap::default();
-        Self {
-            fs,
-            cache
-        }
+        Self { fs, cache }
     }
 }
 
@@ -95,7 +87,6 @@ impl<T: GetFile> GetFile for Cache<T> {
         }
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -125,7 +116,53 @@ mod tests {
     #[bench]
     fn bench_fs(b: &mut Bencher) {
         init();
-        let mut fs = FS{};
+        let mut fs = FS {};
+        let file = FILES.get(50).unwrap();
+
+        b.iter(|| {
+            black_box(fs.get_file(file));
+        });
+    }
+
+    #[bench]
+    fn bench_cache_git(b: &mut Bencher) {
+        init();
+        let git = Git::new(TEST_DIR);
+        let mut cache = Cache::new(git);
+        let file = FILES.get(50).unwrap();
+
+        b.iter(|| {
+            black_box(cache.get_file(file));
+        });
+    }
+
+    #[bench]
+    fn bench_cache_fs(b: &mut Bencher) {
+        init();
+        let fs = FS {};
+        let mut cache = Cache::new(fs);
+        let file = FILES.get(50).unwrap();
+
+        b.iter(|| {
+            black_box(cache.get_file(file));
+        });
+    }
+
+    #[bench]
+    fn bench_git_100_files(b: &mut Bencher) {
+        init();
+        let mut git = Git::new(TEST_DIR);
+        let file = FILES.get(50).unwrap();
+
+        b.iter(|| {
+            black_box(git.get_file(file));
+        });
+    }
+
+    #[bench]
+    fn bench_fs_100_files(b: &mut Bencher) {
+        init();
+        let mut fs = FS {};
 
         b.iter(|| {
             FILES.iter().for_each(|file| {
@@ -134,9 +171,8 @@ mod tests {
         });
     }
 
-
     #[bench]
-    fn bench_cache_git(b: &mut Bencher) {
+    fn bench_cache_git_100_files(b: &mut Bencher) {
         init();
         let git = Git::new(TEST_DIR);
         let mut cache = Cache::new(git);
@@ -149,9 +185,9 @@ mod tests {
     }
 
     #[bench]
-    fn bench_cache_fs(b: &mut Bencher) {
+    fn bench_cache_fs_100_files(b: &mut Bencher) {
         init();
-        let fs = FS{};
+        let fs = FS {};
         let mut cache = Cache::new(fs);
 
         b.iter(|| {
@@ -160,6 +196,4 @@ mod tests {
             });
         });
     }
-
-
 }
