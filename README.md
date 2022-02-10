@@ -14,6 +14,21 @@ File querying is implemented for the following systems:
 3. Cached Git
 4. Cached file system
 
+## Benchmarks
+
+| Benchmark name                     | File access method  | Cached | Number of files queried/iteration |
+| ---------------------------------- | ------------------- | ------ | --------------------------------- |
+| `tests::bench_fs`                  | vanilla file system | False  | 1                                 |
+| `tests::bench_git`                 | `git`               | False  | 1                                 |
+| `tests::bench_cache_fs`            | vanilla file system | True   | 1                                 |
+| `tests::bench_cache_git`           | `git`               | True   | 1                                 |
+| `tests::bench_fs_100_files`        | vanilla file system | False  | 100                               |
+| `tests::bench_git_100_files`       | `git`               | False  | 100                               |
+| `tests::bench_cache_fs_100_files`  | vanilla file system | True   | 100                               |
+| `tests::bench_cache_git_100_files` | `git`               | True   | 100                               |
+
+See [results](#results)
+
 ## How to run
 
 1. Download `rustup`: see [rustup.rs](https://rustup.rs/)
@@ -49,14 +64,18 @@ Run on Intel Core i7-9750h, NVMe SSD(read: 1,700MB/s), 32GB DDR4 @2667 MHz
 ```bash
 ➜  git-bench git:(master) ✗ cargo bench
    Compiling git-bench v0.1.0 (/home/aravinth/code/batsaene/git-bench)
-    Finished bench [optimized] target(s) in 0.54s
+    Finished bench [optimized] target(s) in 0.93s
      Running unittests (target/release/deps/git_bench-91a556763cda354f)
 
-running 4 tests
-test tests::bench_cache_fs  ... bench:       2,341 ns/iter (+/- 81)
-test tests::bench_cache_git ... bench:       2,366 ns/iter (+/- 59)
-test tests::bench_fs        ... bench:     430,702 ns/iter (+/- 15,572)
-test tests::bench_git       ... bench:   6,849,857 ns/iter (+/- 834,185)
+running 8 tests
+test tests::bench_cache_fs            ... bench:          20 ns/iter (+/- 0)
+test tests::bench_cache_fs_100_files  ... bench:       2,203 ns/iter (+/- 151)
+test tests::bench_cache_git           ... bench:          20 ns/iter (+/- 1)
+test tests::bench_cache_git_100_files ... bench:       2,229 ns/iter (+/- 57)
+test tests::bench_fs                  ... bench:       3,910 ns/iter (+/- 115)
+test tests::bench_fs_100_files        ... bench:     395,029 ns/iter (+/- 48,639)
+test tests::bench_git                 ... bench:   6,938,527 ns/iter (+/- 230,935)
+test tests::bench_git_100_files       ... bench:      67,527 ns/iter (+/- 2,248)
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 4 measured; 0 filtered out; finished in 22.02s
+test result: ok. 0 passed; 0 failed; 0 ignored; 8 measured; 0 filtered out; finished in 13.91s
 ```
